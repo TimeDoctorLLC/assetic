@@ -15,6 +15,7 @@ use Assetic\Asset\AssetInterface;
 use Assetic\Factory\AssetFactory;
 use Assetic\Util\CssUtils;
 use Leafo\ScssPhp\Compiler;
+use Leafo\ScssPhp\Exception\CompilerException;
 
 /**
  * Loads SCSS files using the PHP implementation of scss, scssphp.
@@ -114,7 +115,11 @@ class ScssphpFilter implements DependencyExtractorInterface
             $sc->setVariables($this->variables);
         }
 
-        $asset->setContent($sc->compile($asset->getContent()));
+        try {
+            $asset->setContent($sc->compile($asset->getContent()));
+        } catch (CompilerException $e) {
+            throw new CompilerException($asset->getSourcePath().":".$e->getMessage());
+        }
     }
 
     public function filterDump(AssetInterface $asset)
