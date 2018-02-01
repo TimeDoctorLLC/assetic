@@ -118,7 +118,7 @@ class ScssphpFilter implements DependencyExtractorInterface
         try {
             $asset->setContent($sc->compile($asset->getContent()));
         } catch (CompilerException $e) {
-            throw new CompilerException($asset->getSourcePath().":".$e->getMessage());
+            throw new CompilerException($asset->getSourceDirectory().DIRECTORY_SEPARATOR.$asset->getSourcePath().":".$e->getMessage());
         }
     }
 
